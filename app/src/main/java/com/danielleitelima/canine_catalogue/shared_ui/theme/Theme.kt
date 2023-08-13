@@ -16,15 +16,21 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = darkPrimary,
+    secondary = darkSecondary,
+    tertiary = darkTertiary,
+    onSecondary = darkPrimary,
+    onPrimary = darkSecondary,
+    onTertiary = darkPrimary,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = lightPrimary,
+    secondary = lightSecondary,
+    tertiary = lightTertiary,
+    onSecondary = lightPrimary,
+    onPrimary = lightSecondary,
+    onTertiary = lightPrimary,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -58,7 +64,7 @@ fun CanineCatalogueTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme.not()
         }
     }
 

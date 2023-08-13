@@ -8,11 +8,12 @@ import androidx.room.TypeConverters
 import com.danielleitelima.canine_catalogue.datasource.local.dao.DogBreedDAO
 import com.danielleitelima.canine_catalogue.datasource.local.dao.DogPhotoDAO
 import com.danielleitelima.canine_catalogue.datasource.local.model.DogBreedEntity
+import com.danielleitelima.canine_catalogue.datasource.local.model.DogPhotoEntity
 
 @Database(
     entities = [
         DogBreedEntity::class,
-        DogPhotoDAO::class,
+        DogPhotoEntity::class,
     ],
     version = 1,
     exportSchema = false

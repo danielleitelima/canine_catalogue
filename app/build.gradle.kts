@@ -59,9 +59,15 @@ dependencies {
 
     implementation("androidx.compose.runtime:runtime:1.4.0")
     implementation("androidx.navigation:navigation-compose:2.6.0")
+//    Import material compose
+    implementation("androidx.compose.material:material:1.4.0")
+    implementation("androidx.compose.ui:ui:1.4.0")
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:1.4.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+    implementation ("com.airbnb.android:lottie-compose:6.0.0")
 
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")

@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.danielleitelima.canine_catalogue.datasource.local.model.DogBreedEntity
 import com.danielleitelima.canine_catalogue.datasource.local.model.DogPhotoEntity
 
 @Dao
@@ -14,19 +13,16 @@ interface DogPhotoDAO {
     @Query("SELECT * FROM tb_dog_photo WHERE id = :id LIMIT 1")
     fun get(id: String): DogPhotoEntity
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(photo: DogBreedEntity)
-
     @Update
     suspend fun update(photo: DogPhotoEntity)
 
-    @Query("DELETE FROM tb_dog_breed")
+    @Query("DELETE FROM tb_dog_photo")
     suspend fun deleteAll()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(breedList: List<DogPhotoEntity>)
 
     @Query("SELECT * FROM tb_dog_photo WHERE dogBreedId = :dogBreedId")
-    suspend fun getByDogBreedId(dogBreedId: String): List<DogPhotoEntity>
+    suspend fun getByDogBreedId(dogBreedId: Long): List<DogPhotoEntity>
 
 }

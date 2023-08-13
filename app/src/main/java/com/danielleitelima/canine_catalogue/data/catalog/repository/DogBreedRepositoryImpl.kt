@@ -30,7 +30,7 @@ class DogBreedRepositoryImpl(
         dogBreedDAO.deleteAll()
 
         dogBreeds.forEach { dogBreed ->
-            val dogBreedId = dogBreedDAO.insert(dogBreed.toEntity()).id
+            val dogBreedId = dogBreedDAO.insert(dogBreed.toEntity())
             dogPhotoDAO.insertAll(
                 dogBreed.photos.map {
                     DogPhotoEntity(url = it.url, dogBreedId = dogBreedId)
@@ -46,7 +46,8 @@ class DogBreedRepositoryImpl(
             dogBreed.map {
                 DogBreed(
                     name = it.name,
-                    photos = dogPhotoDAO.getByDogBreedId(it.id).map { dogPhotoEntity ->
+//                    TODO: Fix nullable id
+                    photos = dogPhotoDAO.getByDogBreedId(it.id!!).map { dogPhotoEntity ->
                         dogPhotoEntity.toModel()
                     }
                 )

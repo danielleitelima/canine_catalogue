@@ -21,7 +21,7 @@ interface DogBreedDAO {
     fun get(id: String): Flow<DogBreedEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(breed: DogBreedEntity): DogBreedEntity
+    suspend fun insert(breed: DogBreedEntity): Long
 
     @Update
     suspend fun update(breed: DogBreedEntity)
