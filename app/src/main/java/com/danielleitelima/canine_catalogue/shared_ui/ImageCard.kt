@@ -1,6 +1,7 @@
 package com.danielleitelima.canine_catalogue.shared_ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -32,7 +33,8 @@ fun ImageCard(
     contentDescription: String,
     imageUrl: String,
     isFavorite: Boolean = false,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onFavoriteSelected: (() -> Unit)? = null,
 ) {
     Card(
         modifier = modifier,
@@ -64,7 +66,10 @@ fun ImageCard(
                     modifier = Modifier
                         .size(48.dp)
                         .clip(RoundedCornerShape(6.dp))
-                        .background(Color.Black.copy(alpha = 0.5f)),
+                        .background(Color.Black.copy(alpha = 0.5f))
+                        .clickable {
+                            onFavoriteSelected?.invoke()
+                        },
                 ) {
                     Icon(
                         modifier = Modifier

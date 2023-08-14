@@ -6,4 +6,5 @@ interface DogPhotoRepository {
     suspend fun setIsFavorite(id: String, isFavorite: Boolean)
 
     suspend fun get(id: String): DogPhoto
+
 }

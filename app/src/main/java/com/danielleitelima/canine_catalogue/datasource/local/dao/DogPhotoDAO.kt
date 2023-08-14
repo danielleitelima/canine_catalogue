@@ -6,12 +6,16 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.danielleitelima.canine_catalogue.datasource.local.model.DogPhotoEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DogPhotoDAO {
 
     @Query("SELECT * FROM tb_dog_photo WHERE id = :id LIMIT 1")
-    fun get(id: String): DogPhotoEntity
+    fun get(id: Long): DogPhotoEntity
+
+    @Query("SELECT * FROM tb_dog_photo")
+    fun getAll(): Flow<List<DogPhotoEntity>>
 
     @Update
     suspend fun update(photo: DogPhotoEntity)

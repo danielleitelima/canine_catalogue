@@ -19,13 +19,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.danielleitelima.canine_catalogue.domain.catalog.model.DogBreed
+import com.danielleitelima.canine_catalogue.domain.catalog.model.DogPhoto
 
 @Composable
 fun DogBreedView(
     title: String,
     dogBreeds: List<DogBreed>,
     modifier: Modifier = Modifier,
-    onPhotoSelected: ((Long?) -> Unit)? = null
+    onFavoriteSelected: (DogPhoto) -> Unit,
+    onPhotoSelected: (String) -> Unit,
 ) {
     LazyColumn(
         modifier = modifier
@@ -51,7 +53,8 @@ fun DogBreedView(
         itemsIndexed(dogBreeds) { _, item ->
             DogBreedCarrousel(
                 dogBreed = item,
-                onItemSelect = onPhotoSelected
+                onFavoriteSelected = onFavoriteSelected,
+                onPhotoSelected = onPhotoSelected
             )
         }
 

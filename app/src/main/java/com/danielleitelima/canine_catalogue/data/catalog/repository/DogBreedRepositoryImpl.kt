@@ -10,7 +10,9 @@ import com.danielleitelima.canine_catalogue.domain.catalog.model.DogBreed
 import com.danielleitelima.canine_catalogue.domain.catalog.model.DogPhoto
 import com.danielleitelima.canine_catalogue.domain.catalog.repository.DogBreedRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import java.util.UUID
 
 class DogBreedRepositoryImpl(
     private val dogBreedAPI: DogBreedAPI,
@@ -22,7 +24,10 @@ class DogBreedRepositoryImpl(
             DogBreed(
                 name = it,
                 photos = dogBreedAPI.getPhotos(it)?.message?.map { url ->
-                    DogPhoto(url = url)
+                    DogPhoto(
+                        id = UUID.randomUUID().toString(),
+                        url = url
+                    )
                 }?: emptyList()
             )
         }
@@ -37,19 +42,18 @@ class DogBreedRepositoryImpl(
                 }
             )
         }
-
-        dogBreedDAO.insertAll(dogBreeds.map { it.toEntity() })
     }
 
     override fun getAll(): Flow<List<DogBreed>> {
-        return dogBreedDAO.getAll().map { dogBreed ->
-            dogBreed.map {
+        return dogPhotoDAO.getAll().map { dogPhotos ->
+            val groupedPhotos = dogPhotos.groupBy { it.dogBreedId }
+
+            val dogBreeds = dogBreedDAO.getAll().first() // This method should retrieve all breeds as a list, not as a Flow
+
+            return@map dogBreeds.map { breed ->
                 DogBreed(
-                    name = it.name,
-//                    TODO: Fix nullable id
-                    photos = dogPhotoDAO.getByDogBreedId(it.id!!).map { dogPhotoEntity ->
-                        dogPhotoEntity.toModel()
-                    }
+                    name = breed.name,
+                    photos = groupedPhotos[breed.id]?.map { it.toModel() } ?: listOf()
                 )
             }
         }

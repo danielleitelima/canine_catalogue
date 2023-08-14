@@ -9,12 +9,15 @@ import com.danielleitelima.canine_catalogue.shared_ui.DogBreedView
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
-    onPhotoSelected: ((Long?) -> Unit)? = null
+    onPhotoSelected: (String) -> Unit,
 ) {
     DogBreedView(
         title = "All dogs",
         dogBreeds = viewModel.state.dogBreeds,
         modifier = modifier,
-        onPhotoSelected = onPhotoSelected
+        onPhotoSelected = onPhotoSelected,
+        onFavoriteSelected = { dogPhoto ->
+            viewModel.updateFavoriteState(dogPhoto)
+        }
     )
 }

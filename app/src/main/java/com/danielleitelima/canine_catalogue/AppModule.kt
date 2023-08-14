@@ -1,18 +1,20 @@
 package com.danielleitelima.canine_catalogue
 
 import android.content.Context
-import com.danielleitelima.canine_catalogue.data.catalog.repository.DogBreedRepositoryImpl
 import com.danielleitelima.canine_catalogue.data.catalog.repository.DogPhotoRepositoryImpl
+import com.danielleitelima.canine_catalogue.data.catalog.repository.SnapshotDogBreedRepositoryImpl
 import com.danielleitelima.canine_catalogue.datasource.local.AppDatabase
 import com.danielleitelima.canine_catalogue.datasource.local.dao.DogBreedDAO
 import com.danielleitelima.canine_catalogue.datasource.local.dao.DogPhotoDAO
+import com.danielleitelima.canine_catalogue.datasource.local.datastore.access.DogBreedsCache
 import com.danielleitelima.canine_catalogue.datasource.remote.DogBreedAPI
+import com.danielleitelima.canine_catalogue.datasource.remote.SnapshotDogBreedAPI
 import com.danielleitelima.canine_catalogue.domain.catalog.repository.DogBreedRepository
 import com.danielleitelima.canine_catalogue.domain.catalog.repository.DogPhotoRepository
 import com.danielleitelima.canine_catalogue.domain.catalog.use_case.GetDogBreeds
 import com.danielleitelima.canine_catalogue.domain.catalog.use_case.GetFavorites
 import com.danielleitelima.canine_catalogue.domain.catalog.use_case.RefreshDogBreeds
-import com.danielleitelima.canine_catalogue.domain.catalog.use_case.SetImageFavoriteState
+import com.danielleitelima.canine_catalogue.domain.catalog.use_case.ReverseImageFavoriteState
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,10 +30,16 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+//    @Singleton
+//    @Provides
+//    fun provideBaseUrl(): String {
+//        return "https://dog.ceo/api/breeds/"
+//    }
+
     @Singleton
     @Provides
     fun provideBaseUrl(): String {
-        return "https://dog.ceo/api/breeds/"
+        return "https://danielleitelima.github.io/canine_catalogue/"
     }
 
     @Singleton
@@ -45,6 +53,12 @@ object AppModule {
     fun provideOkhttpClient(): OkHttpClient {
         val okHttpClient = OkHttpClient.Builder()
         return okHttpClient.build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideApiService(retrofit: Retrofit): DogBreedAPI {
+        return retrofit.create(DogBreedAPI::class.java)
     }
 
     @Singleton
@@ -63,8 +77,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): DogBreedAPI {
-        return retrofit.create(DogBreedAPI::class.java)
+    fun provideSnapshotDogBreedAPI(retrofit: Retrofit): SnapshotDogBreedAPI {
+        return retrofit.create(SnapshotDogBreedAPI::class.java)
     }
 
     @Singleton
@@ -81,25 +95,29 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideDogBreedsCache(@ApplicationContext context: Context): DogBreedsCache {
+        return DogBreedsCache(context)
+    }
+
+    @Singleton
+    @Provides
     fun provideDogPhotoRepository(
-        dogPhotoDAO: DogPhotoDAO,
+        dogBreedsCache: DogBreedsCache,
     ): DogPhotoRepository {
         return DogPhotoRepositoryImpl(
-            dogPhotoDAO,
+            dogBreedsCache,
         )
     }
 
     @Singleton
     @Provides
     fun provideDogBreedRepository(
-        dogBreedAPI: DogBreedAPI,
-        dogBreedDAO: DogBreedDAO,
-        dogPhotoDAO: DogPhotoDAO,
+        snapshotDogBreedAPI: SnapshotDogBreedAPI,
+        dogBreedsCache: DogBreedsCache,
     ): DogBreedRepository {
-        return DogBreedRepositoryImpl(
-            dogBreedAPI,
-            dogBreedDAO,
-            dogPhotoDAO,
+        return SnapshotDogBreedRepositoryImpl(
+            snapshotDogBreedAPI,
+            dogBreedsCache
         )
     }
 
@@ -131,8 +149,8 @@ object AppModule {
     @Provides
     fun provideSetImageFavoriteState(
         dogPhotoRepository: DogPhotoRepository
-    ): SetImageFavoriteState {
-        return SetImageFavoriteState(dogPhotoRepository)
+    ): ReverseImageFavoriteState {
+        return ReverseImageFavoriteState(dogPhotoRepository)
     }
 
 }

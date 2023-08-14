@@ -21,11 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.danielleitelima.canine_catalogue.domain.catalog.model.DogBreed
+import com.danielleitelima.canine_catalogue.domain.catalog.model.DogPhoto
 
 @Composable
 fun DogBreedCarrousel(
     dogBreed: DogBreed,
-    onItemSelect: ((Long?) -> Unit)? = null
+    onPhotoSelected: ((String) -> Unit),
+    onFavoriteSelected: (DogPhoto) -> Unit
 ) {
     Column {
         Box(
@@ -56,10 +58,13 @@ fun DogBreedCarrousel(
                     ImageCard(
                         contentDescription = "",
                         imageUrl = item.url,
+                        onFavoriteSelected = {
+                            onFavoriteSelected.invoke(item)
+                        },
                         modifier = Modifier
                             .width(150.dp)
                             .clickable {
-                                onItemSelect?.invoke(item.id)
+                                onPhotoSelected.invoke(item.id)
                             }
                     )
                 }

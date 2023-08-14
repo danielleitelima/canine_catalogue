@@ -43,11 +43,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            CanineCatalogueTheme {
-                HomeScreen()
-            }
-        }
 
         setContent {
             CanineCatalogueTheme {
@@ -102,7 +97,7 @@ class MainActivity : ComponentActivity() {
                                 FavoritesScreen(
                                     modifier = Modifier.padding(it)
                                 ) { itemId ->
-                                    navController.navigateToPhotoView(itemId.toString())
+                                    navController.navigateToPhotoView(itemId)
                                 }
                             }
                         }
@@ -116,8 +111,8 @@ class MainActivity : ComponentActivity() {
 
 private fun NavController.navigateToPhotoView(itemId: String) {
     navigate(
-//        Route.PHOTO_VIEW + "/$itemId"
-        Route.PHOTO_VIEW + "/test"
+        Route.PHOTO_VIEW + "/$itemId"
+//        Route.PHOTO_VIEW + "/test"
     )
 }
 
