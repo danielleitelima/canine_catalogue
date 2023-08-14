@@ -1,6 +1,16 @@
 ## Purpose
 Canine Catalogue is a demo application dedicated to showcasing the latest Android technologies and best practices. It's a modern Android application built using Jetpack Compose, Hilt, Retrofit, Room, and other Android libraries. It's also a showcase of modern Android architecture, leveraging the principles of Clean Architecture and MVVM.
 
+### Design
+
+[Figma design](https://www.figma.com/file/wfeHCNobA40MH2YXEyY4ES/canine_catalogue?type=design&node-id=0%3A1&mode=design&t=TSLYqZTYU4qEsqb2-1)
+
+### Demo
+
+https://github.com/danielleitelima/canine_catalogue/assets/16729547/ecbdf359-b4bc-4cc3-8c95-28eb851dcb6a
+
+> Tested on a Pixel 6a API 30
+
 ## Libraries Used
 The Canine Catalogue leverages an array of modern Android libraries and tools to provide a seamless user experience. Here's a breakdown:
 
@@ -33,11 +43,13 @@ The Canine Catalogue leverages an array of modern Android libraries and tools to
 - JUnit for unit testing frameworks
 
 ## Architecture
-Canine Catalogue is architectured around a Domain-Centered approach, influenced heavily by the principles of Clean Architecture and MVVM (Model-View-ViewModel). Here's a detailed look:
+Canine Catalogue is architectured around a Domain-Centered Multi-module approach, influenced heavily by the principles of Clean Architecture and MVVM (Model-View-ViewModel). Here's a detailed look:
 
-- Domain Layer: Central to the application, this layer is insulated from external changes and houses business logic and use-cases. It remains independent of other layers, ensuring a clear separation of concerns and adhering to SOLID principles.
+- Domain Layer: Central to the application, this layer is insulated from external changes and houses business logic and use cases. It remains independent of other layers, ensuring a clear separation of concerns and adhering to SOLID principles.
 - Data Layer: Operating under the Domain, this layer manages remote and local data sources. It interfaces with databases (such as Room) and network data (using Retrofit), ensuring a seamless flow of data to the domain layer.
 - Presentation Layer: Built on the principles of MVVM, this layer showcases the user interface using Jetpack Compose and interacts with the Domain layer via ViewModels. It ensures a reactive UI experience, with the ViewModel acting as a mediator between the View and the Model.
+
+[Architecture diagram](https://www.figma.com/file/BSFdfOUE8VXcNK3NRR3kbk/canine_catalogue_architecture?type=whiteboard&node-id=0%3A1&t=TSLYqZTYU4qEsqb2-1)
 
 ## Notable Design Patterns:
 
