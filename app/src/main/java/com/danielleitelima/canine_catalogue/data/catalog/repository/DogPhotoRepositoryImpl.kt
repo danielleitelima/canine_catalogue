@@ -35,8 +35,6 @@ class DogPhotoRepositoryImpl(
         }
         Log.d("DogPhotoRepositoryImpl", "setIsFavorite: $id, $isFavorite")
 
-//        dogBreedsCache.set(cache.copy(items = dogBreeds))
-        dogBreedsCache.set(cache.copy( items = cache.items.drop(0)))
-
+        dogBreedsCache.set(cache.copy(items = dogBreeds))
     }
 }

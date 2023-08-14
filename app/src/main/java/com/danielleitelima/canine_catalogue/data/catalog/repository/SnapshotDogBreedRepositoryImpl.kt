@@ -38,7 +38,8 @@ class SnapshotDogBreedRepositoryImpl(
                     photos = breed.photos.map { photo ->
                         DogPhoto(
                             id = photo.id,
-                            url = photo.url
+                            url = photo.url,
+                            isFavorite = photo.isFavorite
                         )
                     }
                 )

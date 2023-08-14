@@ -56,6 +56,7 @@ fun DogBreedCarrousel(
             ) {
                 itemsIndexed(dogBreed.photos) { _, item ->
                     ImageCard(
+                        isFavorite = item.isFavorite,
                         contentDescription = "",
                         imageUrl = item.url,
                         onFavoriteSelected = {
