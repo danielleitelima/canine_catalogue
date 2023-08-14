@@ -40,11 +40,14 @@ import com.danielleitelima.canine_catalogue.R
 import kotlinx.coroutines.launch
 
 @Composable
-fun PhotoViewScreen() {
+fun PhotoViewScreen(
+    url: String,
+    onBack: () -> Unit
+) {
     Box(modifier = Modifier.fillMaxSize()) {
         ZoomableImage(
-            "https://images.dog.ceo/breeds/akita/Akita_hiking_in_Shpella_e_Pellumbasit.jpg",
-            "Dog",
+            url,
+            "Detail",
         )
 
         Box(
@@ -67,7 +70,7 @@ fun PhotoViewScreen() {
             ) {
 
                 Text(
-                    text = "The Dog",
+                    text = "Detail",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -80,8 +83,7 @@ fun PhotoViewScreen() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
-                // Navigation icon to go back
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "Back",
@@ -98,6 +100,8 @@ fun ZoomableImage(
     imageUrl: String, contentDescription: String, modifier: Modifier = Modifier.fillMaxSize()
 ) {
     var scale by remember { mutableStateOf(1f) }
+    var offsetX by remember { mutableStateOf(0f) }
+    var offsetY by remember { mutableStateOf(0f) }
     val coroutineScope = rememberCoroutineScope()
 
     Box(
@@ -111,15 +115,23 @@ fun ZoomableImage(
             modifier = Modifier
                 .fillMaxSize()
                 .pointerInput(Unit) {
-                    detectTransformGestures { _, _, zoom, _ ->
+                    detectTransformGestures { _, pan, zoom, _ ->
                         scale *= zoom
                         scale = scale.coerceAtLeast(1f)
+
+                        val newOffsetX = offsetX + pan.x * scale
+                        val newOffsetY = offsetY + pan.y * scale
+
+                        offsetX = newOffsetX
+                        offsetY = newOffsetY
                     }
 
                     detectTapGestures(onDoubleTap = {
                         coroutineScope.launch {
                             if (scale != 1f) {
                                 scale = 1f
+                                offsetX = 0f
+                                offsetY = 0f
                             } else {
                                 scale = 2f
                             }
@@ -127,7 +139,11 @@ fun ZoomableImage(
                     })
                 }
                 .graphicsLayer(
-                    scaleX = scale, scaleY = scale
+                    scaleX = scale,
+                    scaleY = scale,
+                    translationX = offsetX,
+                    translationY = offsetY
                 ))
     }
 }
+

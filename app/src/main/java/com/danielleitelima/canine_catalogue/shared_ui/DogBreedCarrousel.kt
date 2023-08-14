@@ -65,7 +65,7 @@ fun DogBreedCarrousel(
                         modifier = Modifier
                             .width(150.dp)
                             .clickable {
-                                onPhotoSelected.invoke(item.id)
+                                onPhotoSelected.invoke(item.url)
                             }
                     )
                 }

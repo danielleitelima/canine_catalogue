@@ -15,6 +15,7 @@ import com.danielleitelima.canine_catalogue.domain.catalog.use_case.GetDogBreeds
 import com.danielleitelima.canine_catalogue.domain.catalog.use_case.GetFavorites
 import com.danielleitelima.canine_catalogue.domain.catalog.use_case.RefreshDogBreeds
 import com.danielleitelima.canine_catalogue.domain.catalog.use_case.ReverseImageFavoriteState
+import com.danielleitelima.canine_catalogue.domain.catalog.use_case.UpdateDogBreedsWithFavorite
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -119,6 +120,12 @@ object AppModule {
             snapshotDogBreedAPI,
             dogBreedsCache
         )
+    }
+
+    @Singleton
+    @Provides
+    fun provideUpdateDogBreedsWithFavorite(): UpdateDogBreedsWithFavorite {
+        return UpdateDogBreedsWithFavorite()
     }
 
     @Singleton

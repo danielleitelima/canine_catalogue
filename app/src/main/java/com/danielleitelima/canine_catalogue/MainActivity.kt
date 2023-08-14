@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -74,20 +75,25 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 HomeScreen(
                                     modifier = Modifier.padding(it),
-                                ) { itemId ->
-                                    navController.navigateToPhotoView(itemId.toString())
+                                ) { url ->
+                                    navController.navigateToPhotoView(url)
                                 }
                             }
                         }
                         composable(
-                            route = Route.PHOTO_VIEW + "/{itemId}",
+                            route = Route.PHOTO_VIEW + "?url={url}",
                             arguments = listOf(
-                                navArgument("itemId") {
+                                navArgument("url") {
                                     type = NavType.StringType
                                 }
                             )
                         ) {
-                            PhotoViewScreen()
+                            PhotoViewScreen(
+                                url = it.arguments?.getString("url") ?: "",
+                                onBack = {
+                                    navController.popBackStack()
+                                }
+                            )
                         }
                         composable(Route.FAVORITES) {
                             Scaffold(
@@ -96,8 +102,8 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 FavoritesScreen(
                                     modifier = Modifier.padding(it)
-                                ) { itemId ->
-                                    navController.navigateToPhotoView(itemId)
+                                ) { url ->
+                                    navController.navigateToPhotoView(url)
                                 }
                             }
                         }
@@ -109,10 +115,9 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private fun NavController.navigateToPhotoView(itemId: String) {
+private fun NavController.navigateToPhotoView(url: String) {
     navigate(
-        Route.PHOTO_VIEW + "/$itemId"
-//        Route.PHOTO_VIEW + "/test"
+        Route.PHOTO_VIEW + "?url=$url"
     )
 }
 
@@ -127,13 +132,13 @@ fun BottomNavigation(navController: NavController) {
     }
 
     BottomAppBar(
-        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiary,
-        contentColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiary,
+        backgroundColor = MaterialTheme.colorScheme.background,
         cutoutShape = CircleShape
     ) {
         bottomMenuItemsList.forEach { menuItem ->
+            val isSelected = currentRoute == menuItem.route
             BottomNavigationItem(
-                selected = (currentRoute == menuItem.route),
+                selected = isSelected,
                 onClick = {
                     if (currentRoute != menuItem.route) {
                         navController.navigate(menuItem.route)
@@ -142,13 +147,19 @@ fun BottomNavigation(navController: NavController) {
                 icon = {
                     Icon(
                         imageVector = menuItem.icon,
-                        contentDescription = menuItem.label
+                        contentDescription = menuItem.label,
+                        tint = if (isSelected) {
+                            MaterialTheme.colorScheme.onPrimary
+                        } else {
+                            MaterialTheme.colorScheme.tertiary
+                        }
                     )
                 }
             )
         }
     }
 }
+
 
 private fun prepareBottomMenu(): List<BottomMenuItem> {
     val bottomMenuItemsList = arrayListOf<BottomMenuItem>()
